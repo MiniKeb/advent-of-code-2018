@@ -1,4 +1,4 @@
-const input = require("../day-01/input");
+const input = require("./input");
 
 describe("twice", () => {
   it("génère une séquence infinie", () => {
