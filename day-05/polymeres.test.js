@@ -27,28 +27,32 @@ describe("polymere", () => {
     it("avec une réaction de niveau 3", () => {
       expect(polymere("dfgGFD")).toBe("");
     });
+
+    it("réduction de l'exemple", () => {
+      expect(polymere("dabAcCaCBAcCcaDA")).toBe("dabCBAcaDA");
+    });
   });
 });
 
 function polymere(chaine) {
-  let reduire = function(sequence) {
-    let resultat = "";
-    for (let i = 0; i < sequence.length; ) {
-      const neReagitPas = reaction(sequence[i] + sequence[i + 1]) !== "";
-      if (neReagitPas) {
-        resultat += sequence[i];
-        i++;
-      } else i += 2;
-    }
-
-    return resultat;
-  };
-
   let precedente = chaine;
   let reduction = reduire(chaine);
   while (precedente !== reduction) {
     precedente = reduction;
     reduction = reduire(reduction);
+  }
+
+  return reduction;
+}
+
+function reduire(sequence) {
+  let reduction = "";
+  for (let i = 0; i < sequence.length; ) {
+    const neReagitPas = reaction(sequence[i] + sequence[i + 1]) !== "";
+    if (neReagitPas) {
+      reduction += sequence[i];
+      i++;
+    } else i += 2;
   }
 
   return reduction;
