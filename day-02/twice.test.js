@@ -11,7 +11,30 @@ describe("twice", () => {
     infiniTrois.next();
     expect(infiniTrois.next().value).toBe(1);
   });
+
+  it("détecte une répétition de fréquence", () => {
+    const sequence = [1, -2, 3, 1];
+    expect(twice(sequence)).toBe(2);
+  });
 });
+
+function twice(variations) {
+  const seq = infini(variations);
+  const frequences = [];
+
+  let courante = seq.next();
+
+  while (!courante.done) {
+    const precedente =
+      frequences.length === 0 ? 0 : frequences[frequences.length - 1];
+    const variation = precedente + courante.value;
+
+    if (frequences.includes(variation)) return variation;
+
+    frequences.push(variation);
+    courante = seq.next();
+  }
+}
 
 function* infini(tableau) {
   while (true) {
