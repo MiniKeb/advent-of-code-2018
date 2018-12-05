@@ -1,9 +1,5 @@
 const input = require("./input");
 
-function frequence(changements) {
-  return changements.reduce((total, changement) => total + changement, 0);
-}
-
 describe("fréquence", () => {
   it("calcule la frequence résultante", () => {
     const changements = [1, 2];
@@ -13,3 +9,7 @@ describe("fréquence", () => {
     expect(frequence(input)).toBe(433);
   });
 });
+
+function frequence(changements) {
+  return changements.reduce((total, changement) => total + changement, 0);
+}
