@@ -2,3 +2,4 @@
 .idea/
 advent-of-code-2018.iml
 node_modules/
+yarn-error.log
