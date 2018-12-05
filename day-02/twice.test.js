@@ -1,3 +1,5 @@
+const input = require("../day-01/input");
+
 describe("twice", () => {
   it("génère une séquence infinie", () => {
     expect(infini([1, 2]).next().value).toBe(1);
@@ -15,6 +17,10 @@ describe("twice", () => {
   it("détecte une répétition de fréquence", () => {
     const sequence = [1, -2, 3, 1];
     expect(twice(sequence)).toBe(2);
+  });
+
+  it("donne la solution", () => {
+    expect(twice(input)).toBe(256);
   });
 });
 
