@@ -5,9 +5,12 @@
   "author": "Christophe Cadilhac <christophe.cadilhac@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest "
+    "test": "jest ",
+    "prettier": "pretty-quick"
   },
   "devDependencies": {
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "prettier": "^1.15.3",
+    "pretty-quick": "^1.8.0"
   }
 }
