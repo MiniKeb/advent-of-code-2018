@@ -67,10 +67,7 @@ function reduire(sequence) {
   return reduction;
 }
 
-function reagit(unites) {
-  const gauche = unites[0];
-  const droite = unites[1];
-
+function reagit([gauche, droite]) {
   const memeType = gauche.toUpperCase() === droite.toUpperCase();
 
   const polariteDifferente =
