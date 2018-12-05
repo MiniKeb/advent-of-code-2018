@@ -19,20 +19,34 @@ describe("polymere", () => {
       expect(polymere("AcCd")).toBe("Ad");
       expect(polymere("daba")).toBe("daba");
     });
+
+    it("avec une réaction de niveau 2", () => {
+      expect(polymere("AcCaf")).toBe("f");
+    })
   });
 });
 
 function polymere(chaine) {
-  let resultat = "";
-  for (let i = 0; i < chaine.length; ) {
-    const neReagitPas = reaction(chaine[i] + chaine[i + 1]) !== "";
-    if (neReagitPas) {
-      resultat += chaine[i];
-      i++;
-    } else i += 2;
+  let reduire = function (sequence) {
+    let resultat = "";
+    for (let i = 0; i < sequence.length;) {
+      const neReagitPas = reaction(sequence[i] + sequence[i + 1]) !== "";
+      if (neReagitPas) {
+        resultat += sequence[i];
+        i++;
+      } else i += 2;
+    }
+
+    return resultat;
+  };
+
+
+  let reduction = reduire(chaine);
+  if (reduction !== chaine) {
+    reduction = reduire(reduction)
   }
 
-  return resultat;
+  return reduction;
 }
 
 function reaction(unites) {
