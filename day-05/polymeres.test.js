@@ -1,3 +1,5 @@
+const input = require("./input");
+
 describe("reaction", () => {
   it("fait disparaître si même type et polarité différente", () => {
     expect(reaction("aA")).toBe("");
@@ -30,6 +32,16 @@ describe("polymere", () => {
 
     it("réduction de l'exemple", () => {
       expect(polymere("dabAcCaCBAcCcaDA")).toBe("dabCBAcaDA");
+    });
+  });
+
+  describe("compte des unites", () => {
+    it("compte le nombre d'unités", () => {
+      expect(polymere("AcCd").length).toBe(2);
+    });
+
+    it("donne la réponse", () => {
+      expect(polymere(input).length).toBe(10384);
     });
   });
 });
