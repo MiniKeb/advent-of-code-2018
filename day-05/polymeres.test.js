@@ -22,14 +22,18 @@ describe("polymere", () => {
 
     it("avec une réaction de niveau 2", () => {
       expect(polymere("AcCaf")).toBe("f");
-    })
+    });
+
+    it("avec une réaction de niveau 3", () => {
+      expect(polymere("dfgGFD")).toBe("");
+    });
   });
 });
 
 function polymere(chaine) {
-  let reduire = function (sequence) {
+  let reduire = function(sequence) {
     let resultat = "";
-    for (let i = 0; i < sequence.length;) {
+    for (let i = 0; i < sequence.length; ) {
       const neReagitPas = reaction(sequence[i] + sequence[i + 1]) !== "";
       if (neReagitPas) {
         resultat += sequence[i];
@@ -40,10 +44,11 @@ function polymere(chaine) {
     return resultat;
   };
 
-
+  let precedente = chaine;
   let reduction = reduire(chaine);
-  if (reduction !== chaine) {
-    reduction = reduire(reduction)
+  while (precedente !== reduction) {
+    precedente = reduction;
+    reduction = reduire(reduction);
   }
 
   return reduction;
