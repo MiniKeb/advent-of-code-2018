@@ -2,66 +2,63 @@ const input = require("./input");
 
 describe("reaction", () => {
   it("fait disparaître si même type et polarité différente", () => {
-    expect(reaction("aA")).toBe("");
-    expect(reaction("Aa")).toBe("");
-    expect(reaction("cC")).toBe("");
+    expect(reagit("aA")).toBe(true);
+    expect(reagit("Aa")).toBe(true);
+    expect(reagit("cC")).toBe(true);
   });
 
   it("ne fait pas disparaître si type différent", () => {
-    expect(reaction("ab")).toBe("ab");
+    expect(reagit("ab")).toBe(false);
   });
 
   it("ne fait pas disparaître si même polarité", () => {
-    expect(reaction("BB")).toBe("BB");
+    expect(reagit("BB")).toBe(false);
   });
 });
-describe("polymere", () => {
-  describe("réduction", () => {
-    it("avec seulement une réaction niveau 1", () => {
-      expect(polymere("AcCd")).toBe("Ad");
-      expect(polymere("daba")).toBe("daba");
-    });
-
-    it("avec une réaction de niveau 2", () => {
-      expect(polymere("AcCaf")).toBe("f");
-    });
-
-    it("avec une réaction de niveau 3", () => {
-      expect(polymere("dfgGFD")).toBe("");
-    });
-
-    it("réduction de l'exemple", () => {
-      expect(polymere("dabAcCaCBAcCcaDA")).toBe("dabCBAcaDA");
-    });
+describe("réduction", () => {
+  it("avec seulement une réaction niveau 1", () => {
+    expect(reduction("AcCd")).toBe("Ad");
+    expect(reduction("daba")).toBe("daba");
   });
 
-  describe("compte des unites", () => {
-    it("compte le nombre d'unités", () => {
-      expect(polymere("AcCd").length).toBe(2);
-    });
+  it("avec une réaction de niveau 2", () => {
+    expect(reduction("AcCaf")).toBe("f");
+  });
 
-    it("donne la réponse", () => {
-      expect(polymere(input).length).toBe(10384);
-    });
+  it("avec une réaction de niveau 3", () => {
+    expect(reduction("dfgGFD")).toBe("");
+  });
+
+  it("réduction de l'exemple", () => {
+    expect(reduction("dabAcCaCBAcCcaDA")).toBe("dabCBAcaDA");
   });
 });
 
-function polymere(chaine) {
-  let precedente = chaine;
-  let reduction = reduire(chaine);
-  while (precedente !== reduction) {
-    precedente = reduction;
-    reduction = reduire(reduction);
+describe("compte des unites", () => {
+  it("compte le nombre d'unités", () => {
+    expect(reduction("AcCd").length).toBe(2);
+  });
+
+  it("donne la réponse", () => {
+    expect(reduction(input).length).toBe(10384);
+  });
+});
+
+function reduction(sequence) {
+  let precedente = sequence;
+  let courante = reduire(sequence);
+  while (precedente !== courante) {
+    precedente = courante;
+    courante = reduire(courante);
   }
 
-  return reduction;
+  return courante;
 }
 
 function reduire(sequence) {
   let reduction = "";
   for (let i = 0; i < sequence.length; ) {
-    const neReagitPas = reaction(sequence[i] + sequence[i + 1]) !== "";
-    if (neReagitPas) {
+    if (!reagit(sequence[i] + sequence[i + 1])) {
       reduction += sequence[i];
       i++;
     } else i += 2;
@@ -70,7 +67,7 @@ function reduire(sequence) {
   return reduction;
 }
 
-function reaction(unites) {
+function reagit(unites) {
   const gauche = unites[0];
   const droite = unites[1];
 
@@ -80,7 +77,5 @@ function reaction(unites) {
     gauche !== droite &&
     (gauche.toUpperCase() === droite || gauche === droite.toUpperCase());
 
-  if (memeType && polariteDifferente) return "";
-
-  return unites;
+  return memeType && polariteDifferente
 }
