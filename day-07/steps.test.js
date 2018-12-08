@@ -2,7 +2,7 @@ describe("steps", () => {
   it("extrait un step d'apès une instruction", () => {
     const instruction = "Step C must be finished before step A can begin.";
 
-    expect(step(instruction)).toEqual({
+    expect(extrait(instruction)).toEqual({
       step: "A",
       precedent: "C"
     });
@@ -32,23 +32,23 @@ describe("steps", () => {
 
 function structure(instructions) {
   return instructions.reduce((structure, instruction) => {
-    const s = step(instruction);
-    structure[s.step] = {
-      precedents: structure[s.step]
-        ? [...structure[s.step].precedents, s.precedent]
-        : [s.precedent]
+    const {step, precedent} = extrait(instruction);
+    structure[step] = {
+      precedents: structure[step]
+        ? [...structure[step].precedents, precedent]
+        : [precedent]
     };
 
-    structure[s.precedent] = {
-      precedents: structure[s.precedent]
-        ? structure[s.precedent].precedents
+    structure[precedent] = {
+      precedents: structure[precedent]
+        ? structure[precedent].precedents
         : []
     };
     return structure;
   }, {});
 }
 
-function step(instruction) {
+function extrait(instruction) {
   const regexp = /^Step ([A-Z]) must be finished before step ([A-Z]) can begin.$/g;
 
   const captures = regexp.exec(instruction);
