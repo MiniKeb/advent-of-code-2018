@@ -1,3 +1,5 @@
+const input = require("./input");
+
 describe("steps", () => {
   const exercice = [
     "Step C must be finished before step A can begin.",
@@ -60,6 +62,10 @@ describe("steps", () => {
 
   it("calcule un parcours", () => {
     expect(parcours(exercice)).toBe("CABDFE");
+  });
+
+  it("trouve la solution", () => {
+    expect(parcours(input)).toBe("ABDCJLFMNVQWHIRKTEUXOZSYPG");
   });
 });
 
