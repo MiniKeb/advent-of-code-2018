@@ -46,7 +46,42 @@ describe("steps", () => {
 
     expect(instruction(structure)).toBe("A");
   });
+
+  it("nettoie une structure", () => {
+    const unSansPrecedent = {
+      C: { precedents: [] },
+      A: { precedents: ["C"] }
+    };
+
+    expect(nettoyer(unSansPrecedent, "C")).toEqual({
+      A: { precedents: [] }
+    });
+  });
 });
+
+function nettoyer(structure, cible) {
+  const precedentsNettoyes = Object.entries(structure).reduce(
+    (resultat, [cle, valeur]) => {
+      return {
+        ...resultat,
+        [cle]: { precedents: valeur.precedents.filter(p => p !== cible) }
+      };
+    },
+    {}
+  );
+
+  return Object.entries(precedentsNettoyes).reduce(
+    (resultat, [cle, valeur]) => {
+      if (cle === cible) return resultat;
+      else
+        return {
+          ...resultat,
+          [cle]: valeur
+        };
+    },
+    {}
+  );
+}
 
 function instruction(structure) {
   const disponibles = Object.entries(structure).filter(
@@ -56,8 +91,7 @@ function instruction(structure) {
   let choisie = disponibles[0][0];
   if (disponibles.length > 0) {
     choisie = disponibles.reduce(
-      (mini, [cle]) =>
-        mini.charCodeAt(0) < cle.charCodeAt(0) ? mini : cle,
+      (mini, [cle]) => (mini.charCodeAt(0) < cle.charCodeAt(0) ? mini : cle),
       disponibles[0][0]
     );
   }
