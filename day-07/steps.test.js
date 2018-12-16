@@ -36,14 +36,32 @@ describe("steps", () => {
     };
 
     expect(instruction(unSansPrecedent)).toBe("C");
-  })
+  });
+
+  it("prend la première lettre quand plusieurs instructions sont disponibles", () => {
+    const structure = {
+      C: { precedents: [] },
+      A: { precedents: [] }
+    };
+
+    expect(instruction(structure)).toBe("A");
+  });
 });
 
 function instruction(structure) {
-  const [key, _] = Object.entries(structure).filter(
+  const disponibles = Object.entries(structure).filter(
     ([key, { precedents }]) => precedents.length === 0
-  )[0];
-  return key;
+  );
+
+  let choisie = disponibles[0][0];
+  if (disponibles.length > 0) {
+    choisie = disponibles.reduce(
+      (mini, [cle]) =>
+        mini.charCodeAt(0) < cle.charCodeAt(0) ? mini : cle,
+      disponibles[0][0]
+    );
+  }
+  return choisie;
 }
 
 function structure(instructions) {
