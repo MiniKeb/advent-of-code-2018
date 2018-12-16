@@ -28,11 +28,27 @@ describe("steps", () => {
       ["E"]: { precedents: ["B", "D", "F"] }
     });
   });
+
+  it("prend comme prochaine instruction celle sans précédents", () => {
+    const unSansPrecedent = {
+      C: { precedents: [] },
+      A: { precedents: ["C"] }
+    };
+
+    expect(instruction(unSansPrecedent)).toBe("C");
+  })
 });
+
+function instruction(structure) {
+  const [key, _] = Object.entries(structure).filter(
+    ([key, { precedents }]) => precedents.length === 0
+  )[0];
+  return key;
+}
 
 function structure(instructions) {
   return instructions.reduce((structure, instruction) => {
-    const {step, precedent} = extrait(instruction);
+    const { step, precedent } = extrait(instruction);
     structure[step] = {
       precedents: structure[step]
         ? [...structure[step].precedents, precedent]
@@ -40,9 +56,7 @@ function structure(instructions) {
     };
 
     structure[precedent] = {
-      precedents: structure[precedent]
-        ? structure[precedent].precedents
-        : []
+      precedents: structure[precedent] ? structure[precedent].precedents : []
     };
     return structure;
   }, {});
