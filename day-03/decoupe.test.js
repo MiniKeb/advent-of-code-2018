@@ -1,8 +1,8 @@
 describe("découpe", () => {
-  it("parse une claim", () => {
-    const claimText = "#1 @ 483,830: 24x18";
+  it("crée une pièce à partir d'une règle", () => {
+    const regle = "#1 @ 483,830: 24x18";
 
-    expect(parserClaim(claimText)).toEqual({
+    expect(creerPiece(regle)).toEqual({
       position: {
         gauche: 483,
         haut: 830
@@ -13,12 +13,27 @@ describe("découpe", () => {
       }
     });
   });
+
+  it("place une pièce de taille 1 sur le tissu", () => {
+    const regle = "#1 @ 1,1: 1x1";
+    const tissu = [[0, 0], [0, 0]];
+
+    expect(placerPiece(regle, tissu)).toEqual([[0, 0], [0, 1]]);
+  });
 });
 
-function parserClaim(claimText) {
-  const decoupeDeClaim = /^#\d+ @ (\d+),(\d+): (\d+)x(\d+)$/g;
+function placerPiece(regle, tissu) {
+  const piece = creerPiece(regle);
 
-  const captures = decoupeDeClaim.exec(claimText);
+  tissu[piece.position.gauche][piece.position.haut]++;
+
+  return tissu;
+}
+
+function creerPiece(regle) {
+  const decoupeDePiece = /^#\d+ @ (\d+),(\d+): (\d+)x(\d+)$/g;
+
+  const captures = decoupeDePiece.exec(regle);
 
   return {
     position: {
