@@ -18,7 +18,7 @@ describe("découpe", () => {
     const carre = "#1 @ 0,0: 2x2";
     const tissu = [[0, 0], [0, 0]];
 
-    expect(placerPiece(carre, tissu)).toEqual([[1, 1], [1, 1]]);
+    expect(placerUnePiece(carre, tissu)).toEqual([[1, 1], [1, 1]]);
   });
 
   it("place une pièce rectangulaire sur le tissu", () => {
@@ -28,11 +28,31 @@ describe("découpe", () => {
 
     const tissu = [[0, 0], [0, 0]];
 
-    expect(placerPiece(rectangle, tissu)).toEqual([[1, 0], [1, 0]]);
+    expect(placerUnePiece(rectangle, tissu)).toEqual([[1, 0], [1, 0]]);
+  });
+
+  it("place 2 pièces non superposées sur le tissu", () => {
+    const surLaPremiereLigne = "#1 @ 0,0: 1x1";
+    const surLaSecondeLigne = "#2 @ 1,1: 1x1";
+
+    const tissu = [[0, 0], [0, 0]];
+
+    expect(
+      placerLesPieces([surLaPremiereLigne, surLaSecondeLigne], tissu)
+    ).toEqual([
+        [1, 0],
+        [0, 1]
+    ]);
   });
 });
 
-function placerPiece(regle, tissu) {
+function placerLesPieces(regles, tissu) {
+  return regles.reduce((tissuEnCours, regle) => {
+    return placerUnePiece(regle, tissuEnCours)
+  }, tissu)
+}
+
+function placerUnePiece(regle, tissu) {
   const {
     taille: { largeur, hauteur },
     position: { gauche, haut }
