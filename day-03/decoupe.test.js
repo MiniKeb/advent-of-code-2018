@@ -49,7 +49,24 @@ describe("découpe", () => {
 
     expect(placerLesPieces([piece, piece], tissu)).toEqual([[2, 0], [0, 0]]);
   });
+
+  it("compte les superpositions", () => {
+    const tissuAvecUneSuperposition = [[2, 0], [1, 0]];
+
+    expect(nombreDeSuperpositions(tissuAvecUneSuperposition)).toBe(1);
+  });
 });
+
+function nombreDeSuperpositions(tissu) {
+  let superpositions = 0;
+  for (let y = 0; y < tissu.length; y++) {
+    for (let x = 0; x < tissu[y].length; x++) {
+      if (tissu[y][x] > 1) superpositions++;
+    }
+  }
+
+  return superpositions;
+}
 
 function placerLesPieces(regles, tissu) {
   return regles.reduce((tissuEnCours, regle) => {
