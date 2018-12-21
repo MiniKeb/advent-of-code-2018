@@ -14,18 +14,35 @@ describe("découpe", () => {
     });
   });
 
-  it("place une pièce de taille 1 sur le tissu", () => {
-    const regle = "#1 @ 1,1: 1x1";
+  it("place une pièce carré sur le tissu", () => {
+    const carre = "#1 @ 0,0: 2x2";
     const tissu = [[0, 0], [0, 0]];
 
-    expect(placerPiece(regle, tissu)).toEqual([[0, 0], [0, 1]]);
+    expect(placerPiece(carre, tissu)).toEqual([[1, 1], [1, 1]]);
+  });
+
+  it("place une pièce rectangulaire sur le tissu", () => {
+    const largeur = `1`;
+    const hauteur = `2`;
+    const rectangle = `#234 @ 0,0: ${largeur}x${hauteur}`;
+
+    const tissu = [[0, 0], [0, 0]];
+
+    expect(placerPiece(rectangle, tissu)).toEqual([[1, 0], [1, 0]]);
   });
 });
 
 function placerPiece(regle, tissu) {
-  const piece = creerPiece(regle);
+  const {
+    taille: { largeur, hauteur },
+    position: { gauche, haut }
+  } = creerPiece(regle);
 
-  tissu[piece.position.gauche][piece.position.haut]++;
+  for (let x = 0; x < largeur; x++) {
+    for (let y = 0; y < hauteur; y++) {
+      tissu[haut + y][gauche + x]++;
+    }
+  }
 
   return tissu;
 }
