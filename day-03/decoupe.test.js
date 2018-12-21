@@ -58,9 +58,10 @@ describe("découpe", () => {
   it("trouve la réponse", () => {
     const tissuImmense = tissuVierge(4000);
 
-    expect(nombreDeSuperpositions(placerLesPieces(input, tissuImmense))).toBe(
-      119551
+    const reponse = nombreDeSuperpositions(
+      placerLesPieces(input, tissuImmense)
     );
+    expect(reponse).toBe(119551);
   });
 });
 
