@@ -1,3 +1,5 @@
+const input = require("./input");
+
 describe("découpe", () => {
   it("crée une pièce à partir d'une règle", () => {
     const regle = "#1 @ 483,830: 24x18";
@@ -16,7 +18,7 @@ describe("découpe", () => {
 
   it("place une pièce carré sur le tissu", () => {
     const carre = "#1 @ 0,0: 2x2";
-    const tissu = [[0, 0], [0, 0]];
+    const tissu = tissuVierge(2);
 
     expect(placerUnePiece(carre, tissu)).toEqual([[1, 1], [1, 1]]);
   });
@@ -26,7 +28,7 @@ describe("découpe", () => {
     const hauteur = `2`;
     const rectangle = `#234 @ 0,0: ${largeur}x${hauteur}`;
 
-    const tissu = [[0, 0], [0, 0]];
+    const tissu = tissuVierge(2);
 
     expect(placerUnePiece(rectangle, tissu)).toEqual([[1, 0], [1, 0]]);
   });
@@ -35,7 +37,7 @@ describe("découpe", () => {
     const surLaPremiereLigne = "#1 @ 0,0: 1x1";
     const surLaSecondeLigne = "#2 @ 1,1: 1x1";
 
-    const tissu = [[0, 0], [0, 0]];
+    const tissu = tissuVierge(2);
 
     expect(
       placerLesPieces([surLaPremiereLigne, surLaSecondeLigne], tissu)
@@ -45,7 +47,7 @@ describe("découpe", () => {
   it("place 2 pièces superposées sur le tissu", () => {
     const piece = "#1 @ 0,0: 1x1";
 
-    const tissu = [[0, 0], [0, 0]];
+    const tissu = tissuVierge(2);
 
     expect(placerLesPieces([piece, piece], tissu)).toEqual([[2, 0], [0, 0]]);
   });
@@ -55,7 +57,23 @@ describe("découpe", () => {
 
     expect(nombreDeSuperpositions(tissuAvecUneSuperposition)).toBe(1);
   });
+
+  it("trouve la réponse", () => {
+    const tissuImmense = tissuVierge(4000);
+
+    expect(nombreDeSuperpositions(placerLesPieces(input, tissuImmense))).toBe(
+      119551
+    );
+  });
 });
+
+function tissuVierge(taille) {
+  const tissu = new Array(taille);
+  for (let i = 0; i < taille; i++) {
+    tissu[i] = new Array(taille).fill(0);
+  }
+  return tissu;
+}
 
 function nombreDeSuperpositions(tissu) {
   let superpositions = 0;
