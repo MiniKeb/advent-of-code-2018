@@ -39,17 +39,22 @@ describe("découpe", () => {
 
     expect(
       placerLesPieces([surLaPremiereLigne, surLaSecondeLigne], tissu)
-    ).toEqual([
-        [1, 0],
-        [0, 1]
-    ]);
+    ).toEqual([[1, 0], [0, 1]]);
+  });
+
+  it("place 2 pièces superposées sur le tissu", () => {
+    const piece = "#1 @ 0,0: 1x1";
+
+    const tissu = [[0, 0], [0, 0]];
+
+    expect(placerLesPieces([piece, piece], tissu)).toEqual([[2, 0], [0, 0]]);
   });
 });
 
 function placerLesPieces(regles, tissu) {
   return regles.reduce((tissuEnCours, regle) => {
-    return placerUnePiece(regle, tissuEnCours)
-  }, tissu)
+    return placerUnePiece(regle, tissuEnCours);
+  }, tissu);
 }
 
 function placerUnePiece(regle, tissu) {
