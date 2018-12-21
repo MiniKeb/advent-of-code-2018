@@ -27,7 +27,6 @@ describe("découpe", () => {
     const largeur = `1`;
     const hauteur = `2`;
     const rectangle = `#234 @ 0,0: ${largeur}x${hauteur}`;
-
     const tissu = tissuVierge(2);
 
     expect(placerUnePiece(rectangle, tissu)).toEqual([[1, 0], [1, 0]]);
@@ -36,20 +35,18 @@ describe("découpe", () => {
   it("place 2 pièces non superposées sur le tissu", () => {
     const surLaPremiereLigne = "#1 @ 0,0: 1x1";
     const surLaSecondeLigne = "#2 @ 1,1: 1x1";
-
+    const regles = [surLaPremiereLigne, surLaSecondeLigne];
     const tissu = tissuVierge(2);
 
-    expect(
-      placerLesPieces([surLaPremiereLigne, surLaSecondeLigne], tissu)
-    ).toEqual([[1, 0], [0, 1]]);
+    expect(placerLesPieces(regles, tissu)).toEqual([[1, 0], [0, 1]]);
   });
 
   it("place 2 pièces superposées sur le tissu", () => {
     const piece = "#1 @ 0,0: 1x1";
-
+    const deuxFoisLaMeme = [piece, piece];
     const tissu = tissuVierge(2);
 
-    expect(placerLesPieces([piece, piece], tissu)).toEqual([[2, 0], [0, 0]]);
+    expect(placerLesPieces(deuxFoisLaMeme, tissu)).toEqual([[2, 0], [0, 0]]);
   });
 
   it("compte les superpositions", () => {
@@ -87,9 +84,10 @@ function nombreDeSuperpositions(tissu) {
 }
 
 function placerLesPieces(regles, tissu) {
-  return regles.reduce((tissuEnCours, regle) => {
-    return placerUnePiece(regle, tissuEnCours);
-  }, tissu);
+  return regles.reduce(
+    (tissuDeTravail, regle) => placerUnePiece(regle, tissuDeTravail),
+    tissu
+  );
 }
 
 function placerUnePiece(regle, tissu) {
