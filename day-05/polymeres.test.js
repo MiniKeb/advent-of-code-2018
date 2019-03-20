@@ -44,35 +44,35 @@ describe("compte des unites", () => {
   });
 });
 
+
 function reduction(sequence) {
-  let precedente = sequence;
-  let courante = reduire(sequence);
-  while (precedente !== courante) {
-    precedente = courante;
-    courante = reduire(courante);
+  let previousIndex = 0;
+  let currentIndex = 0;
+  let nextIndex = currentIndex + 1;
+  let array = [...sequence];
+
+  while(nextIndex < array.length){
+    if(reagit([array[currentIndex], array[nextIndex]])){
+      array[currentIndex] = undefined;
+      array[nextIndex] = undefined;
+      while(array[previousIndex] === undefined && previousIndex > 0){
+        previousIndex--;
+      }
+      currentIndex = previousIndex;
+      nextIndex++;
+    }else{
+      previousIndex = currentIndex;
+      currentIndex = nextIndex;
+      nextIndex++;
+    }
   }
 
-  return courante;
+  return array.filter(c => c !== undefined).join("");
 }
 
-function reduire(sequence) {
-  let reduction = "";
-  for (let i = 0; i < sequence.length; ) {
-    if (!reagit(sequence[i] + sequence[i + 1])) {
-      reduction += sequence[i];
-      i++;
-    } else i += 2;
-  }
-
-  return reduction;
-}
 
 function reagit([gauche, droite]) {
-  const memeType = gauche.toUpperCase() === droite.toUpperCase();
-
-  const polariteDifferente =
-    gauche !== droite &&
-    (gauche.toUpperCase() === droite || gauche === droite.toUpperCase());
-
-  return memeType && polariteDifferente
+  return gauche !== undefined
+      && droite !== undefined
+      && Math.abs(gauche.charCodeAt(0) - droite.charCodeAt(0)) === 32;
 }
